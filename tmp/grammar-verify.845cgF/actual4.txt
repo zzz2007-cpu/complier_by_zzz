@@ -1,0 +1,7 @@
+24371350
+B2:Hi
+char=Q code=81 back=Q data=aQc
+switch-int
+switch-char
+esc=92,39,9,13,0,10 combined=B
+lib:81

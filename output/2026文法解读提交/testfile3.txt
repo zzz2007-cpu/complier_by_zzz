@@ -1,0 +1,62 @@
+const int DIMENSION = 4;
+const int PRIME[4] = {2, 3, 5};
+const int EMPTY_CONST[2] = {};
+const char LABEL[6] = "Hi\n";
+int global_numbers[4] = {1, 2, 3, 4};
+char global_word[5] = "cat";
+
+int sum_all(int data[], int count, int bonus) {
+    int index = 0;
+    int result = bonus;
+    while (index < count) {
+        result = result + data[index];
+        index = index + 1;
+    }
+    return result;
+}
+
+char echo_char(char value) {
+    return value;
+}
+
+void set_first(int data[], int value) {
+    data[0] = value;
+    return;
+}
+
+int main() {
+    printf("24371350\n");
+    int numbers[4] = {10, 20, 30, 40};
+    char word[6] = "OK";
+    int empty_values[3] = {};
+    int raw[2];
+    raw[0] = 1;
+    raw[1] = 2;
+    set_first(raw, 7);
+
+    int value = sum_all(numbers, DIMENSION, numbers[1]);
+    char letter = echo_char('Z');
+    switch (value) {
+        case 119:
+        case 120:
+            printf("matched-int\n");
+            break;
+        default:
+            printf("default-int\n");
+            break;
+    }
+    switch (letter) {
+        case 'A':
+            printf("A\n");
+            break;
+        case 'Z':
+            printf("matched-char\n");
+            break;
+        default:
+            printf("default-char\n");
+    }
+    printf("B1=%d,%c,%s,%d,%d,%d\n",
+           value, letter, word, empty_values[1], PRIME[3], raw[0]);
+    printf("label:%s", LABEL);
+    return 0;
+}

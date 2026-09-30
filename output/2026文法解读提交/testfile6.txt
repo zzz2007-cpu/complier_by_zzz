@@ -1,0 +1,49 @@
+const int VECTOR_SIZE = 3;
+int converted[(int) 'D' - 65] = {7, 8, 9};
+
+int dot_product(int left[], int right[], int count) {
+    int index = 0;
+    int result = 0;
+    while (index < count && left[index] >= 0) {
+        result = result + left[index] * right[index];
+        index = index + 1;
+    }
+    return result;
+}
+
+int safe_divide(int dividend, int divisor, int fallback) {
+    if (divisor == 0 || dividend < 0 && fallback > 0) {
+        return fallback;
+    }
+    return dividend / divisor;
+}
+
+int main() {
+    printf("24371350\n");
+    int first = get_int();
+    int second = get_int();
+    int left[3] = {1, 2, 3};
+    int right[3] = {4, 5, 6};
+    char message[8] = "A2-done";
+
+    int product = dot_product(left, right, VECTOR_SIZE);
+    int selected = safe_divide(first, second, 99);
+    if (first >= second && first != 0 || second == 0) {
+        printf("condition-true\n");
+    } else {
+        printf("condition-false\n");
+    }
+
+    switch (product) {
+        case 31:
+            printf("wrong-product\n");
+            break;
+        case 32:
+            printf("product-ok\n");
+            break;
+        default:
+            printf("product-default\n");
+    }
+    printf("A2=%d,%d,%d,%s\n", product, selected, converted[2], message);
+    return 0;
+}

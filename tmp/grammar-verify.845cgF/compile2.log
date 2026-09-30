@@ -1,0 +1,4 @@
+output/2026文法解读提交/testfile2.txt: In function ‘main’:
+output/2026文法解读提交/testfile2.txt:15:12: warning: zero-length gnu_printf format string [-Wformat-zero-length]
+   15 |     printf("");
+      |            ^~

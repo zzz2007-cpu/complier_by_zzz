@@ -1,0 +1,8 @@
+output/2026文法解读提交/testfile5.txt: In function ‘main’:
+output/2026文法解读提交/testfile5.txt:32:21: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+   32 |     if (zero || two && three) {
+      |                 ~~~~^~~~~~~~
+output/2026文法解读提交/testfile5.txt:36:8: error: suggest explicit braces to avoid ambiguous ‘else’ [-Werror=dangling-else]
+   36 |     if (two > 0)
+      |        ^
+cc1: all warnings being treated as errors

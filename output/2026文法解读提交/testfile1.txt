@@ -1,0 +1,69 @@
+// C-level test: functions, arithmetic, branches and loops.
+int add_three(int first, int second, int third) {
+    return first + second + third;
+}
+
+int no_args() {
+    return 6;
+}
+
+void touch() {
+    return;
+}
+
+int main() {
+    printf("24371350\n");
+    int x = get_int();
+    int positive = +x;
+    int negative = -x;
+    int sum = add_three(positive, 3, 4);
+    int ignored = no_args();
+    no_args();
+    touch();
+    ;
+    {}
+
+    printf("C1\n");
+    if (x < 3) {
+        printf("small\n");
+    } else {
+        printf("large\n");
+    }
+    if (x == 2) {
+        printf("equal\n");
+    }
+    if (x != 0) {
+        printf("nonzero\n");
+    }
+    if (x <= 2) {
+        printf("le\n");
+    }
+    if (x >= 2) {
+        printf("ge\n");
+    }
+    if (x > 1) {
+        printf("gt\n");
+    }
+
+    int i = 0;
+    int loop_sum = 0;
+    while (i < 4) {
+        i = i + 1;
+        if (i == 2) {
+            continue;
+        }
+        if (i > 3) {
+            break;
+        }
+        loop_sum = loop_sum + i;
+    }
+
+    int product = (x + 4) * 3;
+    int quotient = 20 / 3;
+    int remainder = 20 % 3;
+    int difference = x - 7;
+    /* Keep every result visible so later compiler stages are easy to check. */
+    printf("values=%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+           x, negative, sum, ignored, loop_sum, product, quotient, remainder, difference);
+    return 0;
+}

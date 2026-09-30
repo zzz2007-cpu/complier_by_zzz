@@ -1,0 +1,57 @@
+char choose_third(char first, char second, char third) {
+    if (first == second) {
+        return first;
+    }
+    return third;
+}
+
+void replace_at(char data[], int index, char value) {
+    data[index] = value;
+    return;
+}
+
+int main() {
+    printf("24371350\n");
+    char buffer[12] = {};
+    get_string(buffer, 12);
+    char input_char = get_char();
+    int code = (int) input_char;
+    char restored = (char) code;
+
+    char slash = '\\';
+    char quote = '\'';
+    char tab = '\t';
+    char carriage = '\r';
+    char zero = '\0';
+    char newline = '\n';
+    char char_left = 'B';
+    char char_zero = '\0';
+    char combined = char_left + char_zero;
+    char data[4] = {'a', 'b', 'c', '\0'};
+    replace_at(data, 1, choose_third('X', 'Y', restored));
+
+    printf("B2:%s", buffer);
+    printf("char=%c code=%d back=%c data=%s\n", input_char, code, restored, data);
+    switch (code) {
+        case 81:
+            printf("switch-int\n");
+            break;
+        default:
+            printf("other-int\n");
+    }
+    switch (restored) {
+        case 'Q':
+            printf("switch-char\n");
+            break;
+        default:
+            printf("other-char\n");
+    }
+    printf("esc=%d,%d,%d,%d,%d,%d combined=%c\n",
+           (int) slash, (int) quote, (int) tab,
+           (int) carriage, (int) zero, (int) newline, combined);
+
+    put_char('L');
+    put_int(code);
+    put_char('\n');
+    return 0;
+}

@@ -1,0 +1,57 @@
+int side_effects = 0;
+
+int mark(int value) {
+    side_effects = side_effects + 1;
+    return value;
+}
+
+int tick() {
+    static int state = 0;
+    state = state + 1;
+    return state;
+}
+
+int main() {
+    printf("24371350\n");
+    int zero = 0;
+    int two = 2;
+    int three = 3;
+
+    if (zero != 0 && mark(1)) {
+        printf("bad-and\n");
+    }
+    if (two > 0 || mark(1)) {
+        printf("short-or\n");
+    }
+    if (!two && three >= 3 || zero == 0) {
+        printf("complex\n");
+    }
+    if (two > 0 && three > two) {
+        printf("both\n");
+    }
+    if (zero || two && three) {
+        printf("precedence\n");
+    }
+
+    if (two > 0)
+        if (zero > 0)
+            printf("bad-nearest\n");
+        else
+            printf("nearest\n");
+
+    int index = 0;
+    int total = 0;
+    while (index < 5 && total < 10) {
+        index = index + 1;
+        if (index == 2 || index == 4) {
+            continue;
+        }
+        total = total + index;
+    }
+    int alternating = +-+two;
+    int first_tick = tick();
+    int second_tick = tick();
+    printf("A1 side=%d tick=%d,%d loop=%d unary=%d\n",
+           side_effects, first_tick, second_tick, total, alternating);
+    return 0;
+}

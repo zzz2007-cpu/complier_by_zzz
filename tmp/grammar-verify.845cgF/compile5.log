@@ -1,0 +1,7 @@
+output/2026文法解读提交/testfile5.txt: In function ‘main’:
+output/2026文法解读提交/testfile5.txt:32:21: warning: suggest parentheses around ‘&&’ within ‘||’ [-Wparentheses]
+   32 |     if (zero || two && three) {
+      |                 ~~~~^~~~~~~~
+output/2026文法解读提交/testfile5.txt:36:8: warning: suggest explicit braces to avoid ambiguous ‘else’ [-Wdangling-else]
+   36 |     if (two > 0)
+      |        ^

@@ -1,0 +1,29 @@
+const int BASE = 4;
+const int ZERO = 0, ONE = 1, TWO = 2;
+int global_uninitialized;
+int global_a = 3, global_b, global_c = 5;
+
+int main() {
+    printf("24371350\n");
+    static int static_zero;
+    static int static_value = 6;
+    int local_a = BASE + global_a;
+    int local_b;
+    int value2 = ONE;
+    local_b = local_a + global_c;
+
+    printf("globals=%d,%d,%d,%d\n", global_uninitialized, global_b, ZERO, TWO);
+    printf("locals=%d,%d,%d statics=%d,%d\n",
+           local_a, local_b, value2, static_zero, static_value);
+    {
+        int local_a = 9;
+        printf("shadow=%d\n", local_a);
+    }
+    if ((local_b)) {
+        printf("parentheses\n");
+    }
+    if (0) {
+        ;
+    }
+    return 0;
+}

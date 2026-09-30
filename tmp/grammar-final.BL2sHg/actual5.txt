@@ -1,0 +1,7 @@
+24371350
+short-or
+complex
+both
+precedence
+nearest
+A1 side=0 tick=1,2 loop=9 unary=-2

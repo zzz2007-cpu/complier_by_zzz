@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Compiler.dir/main.cpp.o CMakeFiles/Compiler.dir/common/Token.cpp.o CMakeFiles/Compiler.dir/common/Error.cpp.o CMakeFiles/Compiler.dir/lexer/Lexer.cpp.o -o Compiler 

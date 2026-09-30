@@ -1,0 +1,8 @@
+output/2026文法解读提交/testfile4.txt: In function ‘choose_third’:
+output/2026文法解读提交/testfile4.txt:1:24: error: unused parameter ‘first’ [-Werror=unused-parameter]
+    1 | char choose_third(char first, char second, char third) {
+      |                   ~~~~~^~~~~
+output/2026文法解读提交/testfile4.txt:1:36: error: unused parameter ‘second’ [-Werror=unused-parameter]
+    1 | char choose_third(char first, char second, char third) {
+      |                               ~~~~~^~~~~~
+cc1: all warnings being treated as errors

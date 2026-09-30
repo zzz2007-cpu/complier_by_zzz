@@ -1,0 +1,5 @@
+output/2026文法解读提交/testfile6.txt: In function ‘safe_divide’:
+output/2026文法解读提交/testfile6.txt:15:38: error: suggest parentheses around ‘&&’ within ‘||’ [-Werror=parentheses]
+   15 |     if (divisor == 0 || dividend < 0 && fallback > 0) {
+      |                         ~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
