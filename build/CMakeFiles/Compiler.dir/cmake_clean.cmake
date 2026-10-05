@@ -7,6 +7,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/Compiler.dir/lexer/Lexer.cpp.o.d"
   "CMakeFiles/Compiler.dir/main.cpp.o"
   "CMakeFiles/Compiler.dir/main.cpp.o.d"
+  "CMakeFiles/Compiler.dir/parser/Parser.cpp.o"
+  "CMakeFiles/Compiler.dir/parser/Parser.cpp.o.d"
+  "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o"
+  "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o.d"
   "Compiler"
   "Compiler.pdb"
 )

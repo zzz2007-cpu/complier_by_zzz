@@ -1,0 +1,5 @@
+int main(){
+/* first
+second */
+return 0
+}

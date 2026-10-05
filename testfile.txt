@@ -1,17 +1,4 @@
 int main() {
-    int a = 65;
-    char b = (char)a;
-    put_char(b);
-    printf("\n");
-
-    char c = 'A';
-    int d = (int)c;
-    put_int(d);
-    printf("\n");
-
-    int e = 300;
-    char f = (char)e;
-    put_int((int)f);
-    printf("\n");
-    return 0;
+    int a[3];
+    return a[1];
 }

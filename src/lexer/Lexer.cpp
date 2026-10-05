@@ -213,6 +213,47 @@ void Lexer::scan()
         {
             break;
         }
+        if (s[index] == '/' && index + 1 < length)
+        {
+
+            if (s[index + 1] == '/')
+            {
+                index += 2;
+
+                while (index < length && s[index] != '\n')
+                {
+                    index++;
+                }
+
+                continue;
+            }
+
+            if (s[index + 1] == '*')
+            {
+                index += 2; // 跳过 /*
+
+                while (index < length)
+                {
+
+                    if (s[index] == '*' &&
+                        index + 1 < length &&
+                        s[index + 1] == '/')
+                    {
+                        index += 2;
+                        break;
+                    }
+
+                    if (s[index] == '\n')
+                    {
+                        line++;
+                    }
+
+                    index++;
+                }
+
+                continue;
+            }
+        }
         char current = s[index];
         if (current == '_' || isalpha(current))
         {

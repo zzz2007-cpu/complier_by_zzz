@@ -11,6 +11,8 @@ add_executable(Compiler
     common/Token.cpp
     common/Error.cpp
     lexer/Lexer.cpp
+    parser/Parser.cpp
+    parser/SyntaxNode.cpp
 )
 
 target_include_directories(Compiler PRIVATE

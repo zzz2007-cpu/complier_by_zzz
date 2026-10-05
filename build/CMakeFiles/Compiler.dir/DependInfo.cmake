@@ -12,6 +12,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/zzz2007-cpu/projects/compiler/src/common/Token.cpp" "CMakeFiles/Compiler.dir/common/Token.cpp.o" "gcc" "CMakeFiles/Compiler.dir/common/Token.cpp.o.d"
   "/home/zzz2007-cpu/projects/compiler/src/lexer/Lexer.cpp" "CMakeFiles/Compiler.dir/lexer/Lexer.cpp.o" "gcc" "CMakeFiles/Compiler.dir/lexer/Lexer.cpp.o.d"
   "/home/zzz2007-cpu/projects/compiler/src/main.cpp" "CMakeFiles/Compiler.dir/main.cpp.o" "gcc" "CMakeFiles/Compiler.dir/main.cpp.o.d"
+  "/home/zzz2007-cpu/projects/compiler/src/parser/Parser.cpp" "CMakeFiles/Compiler.dir/parser/Parser.cpp.o" "gcc" "CMakeFiles/Compiler.dir/parser/Parser.cpp.o.d"
+  "/home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.cpp" "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o" "gcc" "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

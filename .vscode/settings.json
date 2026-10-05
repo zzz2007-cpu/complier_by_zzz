@@ -1,3 +1,5 @@
 {
-    "cmake.sourceDirectory": "/home/zzz2007-cpu/projects/compiler/src"
+    "cmake.sourceDirectory": "/home/zzz2007-cpu/projects/compiler/src",
+    "trae.tab.enableRename": false,
+    "trae.tab.enableAutoImport": false
 }

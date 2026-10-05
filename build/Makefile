@@ -225,6 +225,54 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+parser/Parser.o: parser/Parser.cpp.o
+.PHONY : parser/Parser.o
+
+# target to build an object file
+parser/Parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/parser/Parser.cpp.o
+.PHONY : parser/Parser.cpp.o
+
+parser/Parser.i: parser/Parser.cpp.i
+.PHONY : parser/Parser.i
+
+# target to preprocess a source file
+parser/Parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/parser/Parser.cpp.i
+.PHONY : parser/Parser.cpp.i
+
+parser/Parser.s: parser/Parser.cpp.s
+.PHONY : parser/Parser.s
+
+# target to generate assembly for a file
+parser/Parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/parser/Parser.cpp.s
+.PHONY : parser/Parser.cpp.s
+
+parser/SyntaxNode.o: parser/SyntaxNode.cpp.o
+.PHONY : parser/SyntaxNode.o
+
+# target to build an object file
+parser/SyntaxNode.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o
+.PHONY : parser/SyntaxNode.cpp.o
+
+parser/SyntaxNode.i: parser/SyntaxNode.cpp.i
+.PHONY : parser/SyntaxNode.i
+
+# target to preprocess a source file
+parser/SyntaxNode.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.i
+.PHONY : parser/SyntaxNode.cpp.i
+
+parser/SyntaxNode.s: parser/SyntaxNode.cpp.s
+.PHONY : parser/SyntaxNode.s
+
+# target to generate assembly for a file
+parser/SyntaxNode.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.s
+.PHONY : parser/SyntaxNode.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -246,6 +294,12 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... parser/Parser.o"
+	@echo "... parser/Parser.i"
+	@echo "... parser/Parser.s"
+	@echo "... parser/SyntaxNode.o"
+	@echo "... parser/SyntaxNode.i"
+	@echo "... parser/SyntaxNode.s"
 .PHONY : help
 
 

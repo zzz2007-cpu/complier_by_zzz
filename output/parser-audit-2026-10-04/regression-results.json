@@ -1,0 +1,614 @@
+[
+  {
+    "name": "course_correct",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "course_errors",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "3 i\n4 a\n",
+    "actual_errors": "3 i\n4 a\n",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "const_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "const_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "1 i\n",
+    "actual_errors": "1 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "var_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "var_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "static_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "static_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "assignment_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "assignment_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "exp_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "exp_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "break_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "break_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "continue_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "continue_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "return_value_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "return_value_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "return_empty_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "return_empty_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "printf_semicolon_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "printf_semicolon_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 i\n",
+    "actual_errors": "2 i\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "main_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "main_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "1 j\n",
+    "actual_errors": "1 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "func_empty_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "func_empty_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "1 j\n",
+    "actual_errors": "1 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "func_params_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "func_params_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "1 j\n",
+    "actual_errors": "1 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "call_empty_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "call_empty_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "3 j\n",
+    "actual_errors": "3 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "call_params_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "call_params_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "3 j\n",
+    "actual_errors": "3 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "if_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "if_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 j\n",
+    "actual_errors": "2 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "while_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "while_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 j\n",
+    "actual_errors": "2 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "switch_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "switch_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 j\n",
+    "actual_errors": "2 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "primary_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "primary_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 j\n",
+    "actual_errors": "2 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "cast_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "cast_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 j\n",
+    "actual_errors": "2 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "printf_rparen_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "printf_rparen_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 j\n",
+    "actual_errors": "2 j\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "const_rbracket_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "const_rbracket_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "1 k\n",
+    "actual_errors": "1 k\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "var_rbracket_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "var_rbracket_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 k\n",
+    "actual_errors": "2 k\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "param_rbracket_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "param_rbracket_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "1 k\n",
+    "actual_errors": "1 k\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "lval_read_rbracket_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "lval_read_rbracket_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 k\n",
+    "actual_errors": "2 k\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "lval_assign_rbracket_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "lval_assign_rbracket_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 k\n",
+    "actual_errors": "2 k\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "lval_expression_boundary_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "lval_expression_boundary_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 k\n",
+    "actual_errors": "2 k\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "nested_lval_rbracket_intact",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "nested_lval_rbracket_missing",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 k\n",
+    "actual_errors": "2 k\n",
+    "stderr": "",
+    "exact_tree_checked": true
+  },
+  {
+    "name": "minimal",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "declarations",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "functions",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "operators",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "loops_switch",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "nested_index",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "dangling_else",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "empty_initializers",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "",
+    "actual_errors": "",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "four_errors",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "1 j\n2 i\n6 j\n7 k\n",
+    "actual_errors": "1 j\n2 i\n6 j\n7 k\n",
+    "stderr": "",
+    "exact_tree_checked": false
+  },
+  {
+    "name": "mixed_errors",
+    "passed": true,
+    "exit": 0,
+    "expected_errors": "2 k\n3 a\n4 j\n6 i\n",
+    "actual_errors": "2 k\n3 a\n4 j\n6 i\n",
+    "stderr": "",
+    "exact_tree_checked": false
+  }
+]

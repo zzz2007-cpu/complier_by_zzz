@@ -332,4 +332,8 @@ CMakeFiles/Compiler.dir/main.cpp.o: \
  /usr/include/c++/13/bits/fs_ops.h /usr/include/c++/13/memory_resource \
  /home/zzz2007-cpu/projects/compiler/src/lexer/Lexer.h \
  /home/zzz2007-cpu/projects/compiler/src/common/Token.h \
- /home/zzz2007-cpu/projects/compiler/src/common/Error.h
+ /home/zzz2007-cpu/projects/compiler/src/common/Error.h \
+ /home/zzz2007-cpu/projects/compiler/src/parser/Parser.h \
+ /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.h \
+ /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxType.h \
+ /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.h

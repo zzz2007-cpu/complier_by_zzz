@@ -2,7 +2,10 @@
 #define ERROR_H
 enum class ErrorType : char
 {
-    IllegalSymbol = 'a'
+    IllegalSymbol = 'a',
+    MissingSemicolon = 'i',
+    MissingRightParenthesis = 'j',
+    MissingRightBracket = 'k'
 };
 struct Error
 {
