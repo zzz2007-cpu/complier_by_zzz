@@ -273,6 +273,54 @@ parser/SyntaxNode.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.s
 .PHONY : parser/SyntaxNode.cpp.s
 
+semantic/SemanticAnalyzer.o: semantic/SemanticAnalyzer.cpp.o
+.PHONY : semantic/SemanticAnalyzer.o
+
+# target to build an object file
+semantic/SemanticAnalyzer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o
+.PHONY : semantic/SemanticAnalyzer.cpp.o
+
+semantic/SemanticAnalyzer.i: semantic/SemanticAnalyzer.cpp.i
+.PHONY : semantic/SemanticAnalyzer.i
+
+# target to preprocess a source file
+semantic/SemanticAnalyzer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.i
+.PHONY : semantic/SemanticAnalyzer.cpp.i
+
+semantic/SemanticAnalyzer.s: semantic/SemanticAnalyzer.cpp.s
+.PHONY : semantic/SemanticAnalyzer.s
+
+# target to generate assembly for a file
+semantic/SemanticAnalyzer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.s
+.PHONY : semantic/SemanticAnalyzer.cpp.s
+
+semantic/SymbolTable.o: semantic/SymbolTable.cpp.o
+.PHONY : semantic/SymbolTable.o
+
+# target to build an object file
+semantic/SymbolTable.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o
+.PHONY : semantic/SymbolTable.cpp.o
+
+semantic/SymbolTable.i: semantic/SymbolTable.cpp.i
+.PHONY : semantic/SymbolTable.i
+
+# target to preprocess a source file
+semantic/SymbolTable.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.i
+.PHONY : semantic/SymbolTable.cpp.i
+
+semantic/SymbolTable.s: semantic/SymbolTable.cpp.s
+.PHONY : semantic/SymbolTable.s
+
+# target to generate assembly for a file
+semantic/SymbolTable.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Compiler.dir/build.make CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.s
+.PHONY : semantic/SymbolTable.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -300,6 +348,12 @@ help:
 	@echo "... parser/SyntaxNode.o"
 	@echo "... parser/SyntaxNode.i"
 	@echo "... parser/SyntaxNode.s"
+	@echo "... semantic/SemanticAnalyzer.o"
+	@echo "... semantic/SemanticAnalyzer.i"
+	@echo "... semantic/SemanticAnalyzer.s"
+	@echo "... semantic/SymbolTable.o"
+	@echo "... semantic/SymbolTable.i"
+	@echo "... semantic/SymbolTable.s"
 .PHONY : help
 
 

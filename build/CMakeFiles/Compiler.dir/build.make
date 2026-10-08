@@ -153,6 +153,34 @@ CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.cpp -o CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.s
 
+CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o: CMakeFiles/Compiler.dir/flags.make
+CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o: /home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.cpp
+CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o: CMakeFiles/Compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zzz2007-cpu/projects/compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o -MF CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o.d -o CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o -c /home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.cpp
+
+CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.cpp > CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.i
+
+CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.cpp -o CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.s
+
+CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o: CMakeFiles/Compiler.dir/flags.make
+CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o: /home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.cpp
+CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o: CMakeFiles/Compiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/zzz2007-cpu/projects/compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o -MF CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o.d -o CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o -c /home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.cpp
+
+CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.cpp > CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.i
+
+CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.cpp -o CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.s
+
 # Object files for target Compiler
 Compiler_OBJECTS = \
 "CMakeFiles/Compiler.dir/main.cpp.o" \
@@ -160,7 +188,9 @@ Compiler_OBJECTS = \
 "CMakeFiles/Compiler.dir/common/Error.cpp.o" \
 "CMakeFiles/Compiler.dir/lexer/Lexer.cpp.o" \
 "CMakeFiles/Compiler.dir/parser/Parser.cpp.o" \
-"CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o"
+"CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o" \
+"CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o" \
+"CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o"
 
 # External object files for target Compiler
 Compiler_EXTERNAL_OBJECTS =
@@ -171,9 +201,11 @@ Compiler: CMakeFiles/Compiler.dir/common/Error.cpp.o
 Compiler: CMakeFiles/Compiler.dir/lexer/Lexer.cpp.o
 Compiler: CMakeFiles/Compiler.dir/parser/Parser.cpp.o
 Compiler: CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o
+Compiler: CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o
+Compiler: CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o
 Compiler: CMakeFiles/Compiler.dir/build.make
 Compiler: CMakeFiles/Compiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/zzz2007-cpu/projects/compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable Compiler"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/zzz2007-cpu/projects/compiler/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable Compiler"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Compiler.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

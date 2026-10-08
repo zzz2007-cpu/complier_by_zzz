@@ -34,5 +34,17 @@
   "command": "/usr/bin/c++  -I/home/zzz2007-cpu/projects/compiler/src -g -std=gnu++17 -o CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o -c /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.cpp",
   "file": "/home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.cpp",
   "output": "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o"
+},
+{
+  "directory": "/home/zzz2007-cpu/projects/compiler/build",
+  "command": "/usr/bin/c++  -I/home/zzz2007-cpu/projects/compiler/src -g -std=gnu++17 -o CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o -c /home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.cpp",
+  "file": "/home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.cpp",
+  "output": "CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o"
+},
+{
+  "directory": "/home/zzz2007-cpu/projects/compiler/build",
+  "command": "/usr/bin/c++  -I/home/zzz2007-cpu/projects/compiler/src -g -std=gnu++17 -o CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o -c /home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.cpp",
+  "file": "/home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.cpp",
+  "output": "CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o"
 }
 ]

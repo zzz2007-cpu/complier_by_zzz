@@ -3,9 +3,19 @@
 enum class ErrorType : char
 {
     IllegalSymbol = 'a',
+    RedefineName = 'b',
+    UndefinedName = 'c',
+    ParameterCountMismatch = 'd',
+    TypeMismatch = 'e',
     MissingSemicolon = 'i',
     MissingRightParenthesis = 'j',
-    MissingRightBracket = 'k'
+    MissingRightBracket = 'k',
+    ModifyConstant = 'h',
+    ReturnValueInVoidFunction = 'f',
+    MissingReturn = 'g',
+    PrintfArgumentCountMismatch = 'l',
+    InvalidLoopControl = 'm',
+    DuplicateCaseOrDefault = 'n'
 };
 struct Error
 {

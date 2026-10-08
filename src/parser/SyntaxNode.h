@@ -15,6 +15,23 @@ struct SyntaxNode
     explicit SyntaxNode(const SyntaxType &value) : node(value)
     {
     }
+    bool isTerminal() const
+    {
+        return holds_alternative<Token>(node);
+    }
+
+    const TokenType getTokenType() const
+    {
+        return get<Token>(node).type;
+    }
+    const Token getToken() const
+    {
+        return get<Token>(node);
+    }
+    SyntaxType getSyntaxType() const
+    {
+        return get<SyntaxType>(node);
+    }
 };
 void printSyntaxTree(const SyntaxNode &node, ostream &output);
 

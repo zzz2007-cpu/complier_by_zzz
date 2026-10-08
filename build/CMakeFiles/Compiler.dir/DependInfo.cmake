@@ -14,6 +14,8 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/zzz2007-cpu/projects/compiler/src/main.cpp" "CMakeFiles/Compiler.dir/main.cpp.o" "gcc" "CMakeFiles/Compiler.dir/main.cpp.o.d"
   "/home/zzz2007-cpu/projects/compiler/src/parser/Parser.cpp" "CMakeFiles/Compiler.dir/parser/Parser.cpp.o" "gcc" "CMakeFiles/Compiler.dir/parser/Parser.cpp.o.d"
   "/home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.cpp" "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o" "gcc" "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o.d"
+  "/home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.cpp" "CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o" "gcc" "CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o.d"
+  "/home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.cpp" "CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o" "gcc" "CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -336,4 +336,7 @@ CMakeFiles/Compiler.dir/main.cpp.o: \
  /home/zzz2007-cpu/projects/compiler/src/parser/Parser.h \
  /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.h \
  /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxType.h \
+ /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.h \
+ /home/zzz2007-cpu/projects/compiler/src/semantic/SemanticAnalyzer.h \
+ /home/zzz2007-cpu/projects/compiler/src/semantic/SymbolTable.h \
  /home/zzz2007-cpu/projects/compiler/src/parser/SyntaxNode.h

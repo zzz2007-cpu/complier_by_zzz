@@ -11,6 +11,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/Compiler.dir/parser/Parser.cpp.o.d"
   "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o"
   "CMakeFiles/Compiler.dir/parser/SyntaxNode.cpp.o.d"
+  "CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o"
+  "CMakeFiles/Compiler.dir/semantic/SemanticAnalyzer.cpp.o.d"
+  "CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o"
+  "CMakeFiles/Compiler.dir/semantic/SymbolTable.cpp.o.d"
   "Compiler"
   "Compiler.pdb"
 )

@@ -13,6 +13,8 @@ add_executable(Compiler
     lexer/Lexer.cpp
     parser/Parser.cpp
     parser/SyntaxNode.cpp
+    semantic/SymbolTable.cpp
+semantic/SemanticAnalyzer.cpp
 )
 
 target_include_directories(Compiler PRIVATE

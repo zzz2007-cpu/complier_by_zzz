@@ -2,6 +2,7 @@
 #include "lexer/Lexer.h"
 #include "parser/Parser.h"
 #include "parser/SyntaxNode.h"
+#include "semantic/SemanticAnalyzer.h"
 using namespace std;
 int main()
 {
@@ -22,11 +23,29 @@ int main()
 
     Parser parser(lexer.tokens);
     SyntaxNode root = parser.parse();
-    vector<Error> errors = parser.errors;
     vector<Error> allErrors = lexer.errors;
-    allErrors.insert(allErrors.end(), errors.begin(), errors.end());
-    stable_sort(allErrors.begin(), allErrors.end(), [](Error a, Error b)
-                { return a.line < b.line; });
+
+    SemanticAnalyzer analyzer;
+    analyzer.analyze(root);
+    // vector<Error> allErrors = lexer.errors;
+
+    allErrors.insert(
+        allErrors.end(),
+        parser.errors.begin(),
+        parser.errors.end());
+
+    allErrors.insert(
+        allErrors.end(),
+        analyzer.errors.begin(),
+        analyzer.errors.end());
+
+    stable_sort(
+        allErrors.begin(),
+        allErrors.end(),
+        [](const Error &a, const Error &b)
+        {
+            return a.line < b.line;
+        });
 
     ofstream errorFile("error.txt");
     if (!errorFile.is_open())
@@ -39,12 +58,7 @@ int main()
         errorFile << error.line << ' '
                   << (char)error.type << '\n';
     }
-    ofstream parserFile("parser.txt");
-    if (!parserFile.is_open())
-    {
-        cout << "无法创建\n";
-        return 1;
-    }
-    printSyntaxTree(root, parserFile);
+    ofstream symbolFile("symbol.txt");
+    analyzer.printSymbols(symbolFile);
     return 0;
 }

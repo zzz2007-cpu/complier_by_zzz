@@ -1,4 +1,19 @@
+int global;
+
+int fun(int a, char buffer[]) {
+    int x;
+    {
+        char y;
+    }
+    return a;
+}
+
+void work() {
+    static int z;
+    return;
+}
+
 int main() {
-    int a[3];
-    return a[1];
+    int m;
+    return 0;
 }
