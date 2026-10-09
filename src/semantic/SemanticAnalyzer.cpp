@@ -34,7 +34,7 @@ BaseType SA::readFuncType(const SyntaxNode &node)
         return BaseType::Invalid;
     }
 }
-void SA::analyze(const SyntaxNode &root)
+void SA::analyze(SyntaxNode &root)
 {
     visitCompUnit(root);
 }
@@ -43,9 +43,9 @@ void SA::printSymbols(ostream &output)
 {
     symbolTable.printSymbols(output);
 }
-void SA::visitCompUnit(const SyntaxNode &Node)
+void SA::visitCompUnit(SyntaxNode &Node)
 {
-    for (SyntaxNode child : Node.children)
+    for (SyntaxNode &child : Node.children)
     {
         if (!child.isTerminal())
         {
@@ -64,9 +64,9 @@ void SA::visitCompUnit(const SyntaxNode &Node)
         }
     }
 }
-void SA::visitDecl(const SyntaxNode &Node)
+void SA::visitDecl(SyntaxNode &Node)
 {
-    for (SyntaxNode child : Node.children)
+    for (SyntaxNode &child : Node.children)
     {
         if (!child.isTerminal())
         {
@@ -94,12 +94,12 @@ BaseType SA::readBType(const SN &node)
         return BaseType::Invalid;
     }
 }
-void SA::visitVarDecl(const SN &Node)
+void SA::visitVarDecl(SN &Node)
 {
     bool isStatic = 0;
     BaseType type = BaseType::Invalid;
 
-    for (const SN &child : Node.children)
+    for (SN &child : Node.children)
     {
         if (isTokenType(child, TokenType::STATICTK))
         {
@@ -115,11 +115,11 @@ void SA::visitVarDecl(const SN &Node)
         }
     }
 }
-void SA::visitConstDecl(const SN &Node)
+void SA::visitConstDecl(SN &Node)
 {
     BaseType baseType = BaseType::Invalid;
 
-    for (const SN &child : Node.children)
+    for (SN &child : Node.children)
     {
         if (isSyntaxType(child, ST::BType))
         {
@@ -131,10 +131,10 @@ void SA::visitConstDecl(const SN &Node)
         }
     }
 }
-void SA::visitVarDef(const SyntaxNode &Node, BaseType baseType, bool isStatic)
+void SA::visitVarDef(SyntaxNode &Node, BaseType baseType, bool isStatic)
 {
     const Token &token = get<Token>(Node.children[0].node);
-    for (const SN &child : Node.children)
+    for (SN &child : Node.children)
     {
         if (isSyntaxType(child, ST::ConstExp))
         {
@@ -167,16 +167,24 @@ void SA::visitVarDef(const SyntaxNode &Node, BaseType baseType, bool isStatic)
     symbol.type = isArray ? makeArrayType(baseType) : baseType;
     symbol.isStatic = isStatic;
     symbol.line = token.line;
-    if (!symbolTable.addSymbol(symbol))
+    int symbolId = symbolTable.addSymbol(symbol);
+
+    if (symbolId == -1)
     {
-        errors.emplace_back(ErrorType::RedefineName, token.line);
+        errors.emplace_back(
+            ErrorType::RedefineName,
+            token.line);
+    }
+    else
+    {
+        Node.symbolId = symbolId;
     }
 }
 
-void SA::visitConstDef(const SyntaxNode &Node, BaseType baseType)
+void SA::visitConstDef(SyntaxNode &Node, BaseType baseType)
 {
     const Token &token = get<Token>(Node.children[0].node);
-    for (const SN &child : Node.children)
+    for (SN &child : Node.children)
     {
         if (isSyntaxType(child, ST::ConstExp))
         {
@@ -208,18 +216,26 @@ void SA::visitConstDef(const SyntaxNode &Node, BaseType baseType)
     symbol.kind = SymbolKind::Constant;
     symbol.type = isArray ? makeArrayType(baseType) : baseType;
     symbol.line = token.line;
-    if (!symbolTable.addSymbol(symbol))
+    int symbolId = symbolTable.addSymbol(symbol);
+
+    if (symbolId == -1)
     {
-        errors.emplace_back(ErrorType::RedefineName, token.line);
+        errors.emplace_back(
+            ErrorType::RedefineName,
+            token.line);
+    }
+    else
+    {
+        Node.symbolId = symbolId;
     }
 }
 
-void SA::visitFuncDef(const SyntaxNode &node)
+void SA::visitFuncDef(SyntaxNode &node)
 {
-    const SyntaxNode *block = nullptr;
-    const SyntaxNode *funcFParams = nullptr;
+    SyntaxNode *block = nullptr;
+    SyntaxNode *funcFParams = nullptr;
 
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::FuncFParams))
         {
@@ -243,9 +259,17 @@ void SA::visitFuncDef(const SyntaxNode &node)
         symbol.params = collectParamTypes(*funcFParams);
     }
 
-    if (!symbolTable.addSymbol(symbol))
+    int symbolId = symbolTable.addSymbol(symbol);
+
+    if (symbolId == -1)
     {
-        errors.emplace_back(ErrorType::RedefineName, symbol.line);
+        errors.emplace_back(
+            ErrorType::RedefineName,
+            symbol.line);
+    }
+    else
+    {
+        node.symbolId = symbolId;
     }
 
     symbolTable.enterScope();
@@ -272,9 +296,9 @@ void SA::visitFuncDef(const SyntaxNode &node)
     symbolTable.leaveScope();
     currentFunctionReturnType = BaseType::Invalid;
 }
-void SA::visitFuncFParams(const SyntaxNode &node)
+void SA::visitFuncFParams(SyntaxNode &node)
 {
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::FuncFParam))
         {
@@ -282,7 +306,7 @@ void SA::visitFuncFParams(const SyntaxNode &node)
         }
     }
 }
-void SA::visitFuncFParam(const SyntaxNode &node)
+void SA::visitFuncFParam(SyntaxNode &node)
 {
 
     BaseType type = readBType(node.children[0]);
@@ -311,9 +335,17 @@ void SA::visitFuncFParam(const SyntaxNode &node)
     symbol.isStatic = false;
     symbol.line = token.line;
 
-    if (!symbolTable.addSymbol(symbol))
+    int symbolId = symbolTable.addSymbol(symbol);
+
+    if (symbolId == -1)
     {
-        errors.emplace_back(ErrorType::RedefineName, token.line);
+        errors.emplace_back(
+            ErrorType::RedefineName,
+            token.line);
+    }
+    else
+    {
+        node.symbolId = symbolId;
     }
 }
 
@@ -345,14 +377,14 @@ vector<BaseType> SA::collectParamTypes(const SyntaxNode &funcFParams)
 
     return params;
 }
-void SA::visitBlock(const SyntaxNode &node, bool createScope)
+void SA::visitBlock(SyntaxNode &node, bool createScope)
 {
     if (createScope)
     {
         symbolTable.enterScope();
     }
 
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::BlockItem))
         {
@@ -365,9 +397,9 @@ void SA::visitBlock(const SyntaxNode &node, bool createScope)
         symbolTable.leaveScope();
     }
 }
-void SA::visitBlockItem(const SyntaxNode &node)
+void SA::visitBlockItem(SyntaxNode &node)
 {
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::Decl))
         {
@@ -379,12 +411,12 @@ void SA::visitBlockItem(const SyntaxNode &node)
         }
     }
 }
-void SA::visitStmt(const SyntaxNode &node)
+void SA::visitStmt(SyntaxNode &node)
 {
     if (isTokenType(node.children[0], TokenType::WHILETK))
     {
 
-        for (const SN &child : node.children)
+        for (SN &child : node.children)
         {
             if (isSyntaxType(child, ST::Cond))
             {
@@ -436,7 +468,7 @@ void SA::visitStmt(const SyntaxNode &node)
         visitAssignmentStmt(node);
         return;
     }
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
 
         if (isSyntaxType(child, ST::Block))
@@ -461,12 +493,12 @@ void SA::visitStmt(const SyntaxNode &node)
         }
     }
 }
-void SA::visitMainFuncDef(const SyntaxNode &node)
+void SA::visitMainFuncDef(SyntaxNode &node)
 {
     currentFunctionReturnType = BaseType::Int;
     symbolTable.enterScope();
 
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::Block))
         {
@@ -486,9 +518,9 @@ void SA::visitMainFuncDef(const SyntaxNode &node)
     symbolTable.leaveScope();
     currentFunctionReturnType = BaseType::Invalid;
 }
-void SA::visitCaseStmt(const SyntaxNode &node)
+void SA::visitCaseStmt(SyntaxNode &node)
 {
-    for (const SyntaxNode &child : node.children)
+    for (SyntaxNode &child : node.children)
     {
         if (isSyntaxType(child, ST::Stmt))
         {
@@ -547,7 +579,7 @@ BaseType SA::getArrayElementType(BaseType type)
     return BaseType::Invalid;
 }
 
-BaseType SA::visitNumber(const SyntaxNode &node)
+BaseType SA::visitNumber(SyntaxNode &node)
 {
     if (isTokenType(node.children[0], TokenType::INTCON))
     {
@@ -561,7 +593,7 @@ BaseType SA::visitNumber(const SyntaxNode &node)
 
     return BaseType::Invalid;
 }
-BaseType SA::visitLVal(const SyntaxNode &node)
+BaseType SA::visitLVal(SyntaxNode &node)
 {
     Token token = node.children[0].getToken();
     Symbol *symbol = symbolTable.lookup(token.s);
@@ -575,8 +607,9 @@ BaseType SA::visitLVal(const SyntaxNode &node)
         errors.emplace_back(ErrorType::TypeMismatch, token.line);
         return BaseType::Invalid;
     }
-    const SyntaxNode *index = nullptr;
-    for (const SN &child : node.children)
+    node.symbolId = symbol->id;
+    SyntaxNode *index = nullptr;
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::Exp))
         {
@@ -610,9 +643,9 @@ BaseType SA::visitLVal(const SyntaxNode &node)
 
     return elementType;
 }
-BaseType SA::visitPrimaryExp(const SyntaxNode &node)
+BaseType SA::visitPrimaryExp(SyntaxNode &node)
 {
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::Exp))
         {
@@ -633,7 +666,7 @@ BaseType SA::visitPrimaryExp(const SyntaxNode &node)
     return BaseType::Invalid;
 }
 
-BaseType SA::visitExp(const SN &node)
+BaseType SA::visitExp(SN &node)
 {
     if (node.children.empty() ||
         !isSyntaxType(node.children[0], ST::AddExp))
@@ -643,7 +676,7 @@ BaseType SA::visitExp(const SN &node)
 
     return visitAddExp(node.children[0]);
 }
-BaseType SA::visitAddExp(const SN &node)
+BaseType SA::visitAddExp(SN &node)
 {
     if (node.children.size() == 1)
     {
@@ -667,7 +700,7 @@ BaseType SA::visitAddExp(const SN &node)
     errors.push_back(Error(ErrorType::TypeMismatch, token.line));
     return BaseType::Invalid;
 }
-BaseType SA::visitMulExp(const SN &node)
+BaseType SA::visitMulExp(SN &node)
 {
     if (node.children.size() == 1)
     {
@@ -691,7 +724,7 @@ BaseType SA::visitMulExp(const SN &node)
     errors.push_back(Error(ErrorType::TypeMismatch, token.line));
     return BaseType::Invalid;
 }
-BaseType SA::visitUnaryExp(const SN &node)
+BaseType SA::visitUnaryExp(SN &node)
 {
     if (isSyntaxType(node.children[0], SyntaxType::PrimaryExp))
     {
@@ -748,9 +781,13 @@ BaseType SA::visitUnaryExp(const SN &node)
             errors.push_back(Error(ErrorType::TypeMismatch, functionName.line));
             return BaseType::Invalid;
         }
-        const SyntaxNode *funcRParams = nullptr;
+        if (symbol != nullptr)
+        {
+            node.symbolId = symbol->id;
+        }
+        SyntaxNode *funcRParams = nullptr;
 
-        for (const SyntaxNode &child : node.children)
+        for (SyntaxNode &child : node.children)
         {
             if (isSyntaxType(child, SyntaxType::FuncRParams))
             {
@@ -761,7 +798,7 @@ BaseType SA::visitUnaryExp(const SN &node)
 
         if (funcRParams != nullptr)
         {
-            for (const SyntaxNode &child : funcRParams->children)
+            for (SyntaxNode &child : funcRParams->children)
             {
                 if (isSyntaxType(child, SyntaxType::Exp))
                 {
@@ -810,7 +847,7 @@ BaseType SA::visitUnaryExp(const SN &node)
     return BaseType::Invalid;
 }
 
-BaseType SA::visitRelExp(const SN &node)
+BaseType SA::visitRelExp(SN &node)
 {
     if (node.children.size() == 1)
     {
@@ -835,7 +872,7 @@ BaseType SA::visitRelExp(const SN &node)
     }
     return BaseType::Int;
 }
-BaseType SA::visitEqExp(const SN &node)
+BaseType SA::visitEqExp(SN &node)
 {
     if (node.children.size() == 1)
     {
@@ -860,7 +897,7 @@ BaseType SA::visitEqExp(const SN &node)
     }
     return BaseType::Int;
 }
-BaseType SA::visitLAndExp(const SN &node)
+BaseType SA::visitLAndExp(SN &node)
 {
     if (node.children.size() == 1)
     {
@@ -885,7 +922,7 @@ BaseType SA::visitLAndExp(const SN &node)
     }
     return BaseType::Int;
 }
-BaseType SA::visitLOrExp(const SN &node)
+BaseType SA::visitLOrExp(SN &node)
 {
     if (node.children.size() == 1)
     {
@@ -910,11 +947,11 @@ BaseType SA::visitLOrExp(const SN &node)
     }
     return BaseType::Int;
 }
-BaseType SA::visitCond(const SN &node)
+BaseType SA::visitCond(SN &node)
 {
     return visitLOrExp(node.children[0]);
 }
-void SA::visitAssignmentStmt(const SyntaxNode &node)
+void SA::visitAssignmentStmt(SyntaxNode &node)
 {
     BaseType left = visitLVal(node.children[0]);
     BaseType right = visitExp(node.children[2]);
@@ -941,7 +978,7 @@ void SA::visitAssignmentStmt(const SyntaxNode &node)
     }
     return;
 }
-BaseType SA::visitConstExp(const SN &node)
+BaseType SA::visitConstExp(SN &node)
 {
     if (node.children.empty() ||
         !isSyntaxType(node.children[0], ST::AddExp))
@@ -990,9 +1027,9 @@ bool SA::checkConstIdentifiers(const SN &node)
 
     return true;
 }
-void SA::visitInitVal(const SN &node)
+void SA::visitInitVal(SN &node)
 {
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::Exp))
         {
@@ -1000,9 +1037,9 @@ void SA::visitInitVal(const SN &node)
         }
     }
 }
-void SA::visitConstInitVal(const SN &node)
+void SA::visitConstInitVal(SN &node)
 {
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::ConstExp))
         {
@@ -1010,7 +1047,7 @@ void SA::visitConstInitVal(const SN &node)
         }
     }
 }
-void SA::visitReturnStmt(const SyntaxNode &node)
+void SA::visitReturnStmt(SyntaxNode &node)
 {
     const Token &returnToken = node.children[0].getToken();
     if (!isSyntaxType(node.children[1], ST::Exp))
@@ -1051,7 +1088,7 @@ bool SA::blockEndsWithReturn(const SyntaxNode &block)
     }
     return true;
 }
-void SA::visitPrintfStmt(const SyntaxNode &node)
+void SA::visitPrintfStmt(SyntaxNode &node)
 {
     vector<BaseType> paramTypes, actulTypes;
     string params = node.children[2].getToken().s;
@@ -1076,7 +1113,7 @@ void SA::visitPrintfStmt(const SyntaxNode &node)
         }
     }
 
-    for (auto child : node.children)
+    for (SyntaxNode &child : node.children)
     {
         if (isSyntaxType(child, SyntaxType::Exp))
         {
@@ -1101,7 +1138,7 @@ void SA::visitPrintfStmt(const SyntaxNode &node)
         }
     }
 }
-void SA::visitSwitchStmt(const SyntaxNode &node)
+void SA::visitSwitchStmt(SyntaxNode &node)
 {
     BaseType swithType = visitExp(node.children[2]);
     if (swithType != BaseType::Invalid && !isScalarType(swithType))
@@ -1111,7 +1148,7 @@ void SA::visitSwitchStmt(const SyntaxNode &node)
     switchDepth++;
     unordered_set<long long> caseValues;
     bool hasDefault = false;
-    for (const SN &child : node.children)
+    for (SN &child : node.children)
     {
         if (!isSyntaxType(child, ST::CaseStmt))
         {
@@ -1120,7 +1157,7 @@ void SA::visitSwitchStmt(const SyntaxNode &node)
 
         if (isTokenType(child.children[0], TokenType::CASETK))
         {
-            const SyntaxNode &number = child.children[1];
+            SyntaxNode &number = child.children[1];
 
             BaseType caseType = visitNumber(number);
 

@@ -1,0 +1,6 @@
+/build/
+/tmp/
+/lexer.txt
+/parser.txt
+/symbol.txt
+/error.txt

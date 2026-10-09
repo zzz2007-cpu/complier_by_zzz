@@ -1,7 +1,0 @@
-output/2026文法解读提交/testfile3.txt:3:28: warning: ISO C forbids empty initializer braces before C2X [-Wpedantic]
-    3 | const int EMPTY_CONST[2] = {};
-      |                            ^
-output/2026文法解读提交/testfile3.txt: In function ‘main’:
-output/2026文法解读提交/testfile3.txt:31:27: warning: ISO C forbids empty initializer braces before C2X [-Wpedantic]
-   31 |     int empty_values[3] = {};
-      |                           ^

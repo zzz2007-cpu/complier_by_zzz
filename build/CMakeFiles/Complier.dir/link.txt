@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/Complier.dir/main.cpp.o CMakeFiles/Complier.dir/Lexer.cpp.o CMakeFiles/Complier.dir/Error.cpp.o CMakeFiles/Complier.dir/Token.cpp.o -o Complier 

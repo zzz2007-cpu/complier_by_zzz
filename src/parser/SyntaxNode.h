@@ -8,7 +8,7 @@ struct SyntaxNode
     variant<Token, SyntaxType> node;
 
     vector<SyntaxNode> children;
-
+    int symbolId = -1;
     explicit SyntaxNode(const Token &value) : node(value)
     {
     }

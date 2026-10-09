@@ -1,4 +1,0 @@
-24371350
-condition-true
-product-ok
-A2=32,99,9,A2-done

@@ -1,3 +1,0 @@
-/home/zzz2007-cpu/projects/compiler/build/CMakeFiles/Compiler.dir
-/home/zzz2007-cpu/projects/compiler/build/CMakeFiles/edit_cache.dir
-/home/zzz2007-cpu/projects/compiler/build/CMakeFiles/rebuild_cache.dir

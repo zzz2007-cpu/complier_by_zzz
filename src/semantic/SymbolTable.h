@@ -21,6 +21,7 @@ enum class SymbolKind
 struct Symbol
 {
     string name;
+    int id = -1;
     SymbolKind kind;
     BaseType type;
     bool isStatic = false;
@@ -45,14 +46,14 @@ private:
     vector<Scope> scopes;
     int currentScopeId;
     int nextScopeId;
-
+    int nextSymbolId = 0;
     string getOutputTypeName(Symbol &symbol);
 
 public:
     SymbolTable();
     int enterScope();
     void leaveScope();
-    bool addSymbol(Symbol symbol);
+    int addSymbol(Symbol symbol);
 
     Symbol *lookupCurrent(string name);
     Symbol *lookup(string name);

@@ -1,9 +1,0 @@
-1 global Int
-1 fun IntFunc
-1 work VoidFunc
-2 a Int
-2 buffer CharArray
-2 x Int
-3 y Char
-4 z StaticInt
-5 m Int

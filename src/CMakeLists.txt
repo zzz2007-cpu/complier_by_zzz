@@ -14,7 +14,8 @@ add_executable(Compiler
     parser/Parser.cpp
     parser/SyntaxNode.cpp
     semantic/SymbolTable.cpp
-semantic/SemanticAnalyzer.cpp
+    semantic/SemanticAnalyzer.cpp
+    ir/IR.cpp
 )
 
 target_include_directories(Compiler PRIVATE

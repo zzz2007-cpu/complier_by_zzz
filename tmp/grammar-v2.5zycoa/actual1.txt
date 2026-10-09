@@ -1,9 +1,0 @@
-24371350
-C1
-small
-equal
-nonzero
-le
-ge
-gt
-values=2,-2,9,6,4,18,6,2,-5

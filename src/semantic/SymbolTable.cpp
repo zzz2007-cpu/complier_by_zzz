@@ -50,19 +50,23 @@ Symbol *SymbolTable::lookup(string name)
     }
     return nullptr;
 }
-bool SymbolTable::addSymbol(Symbol symbol)
+int SymbolTable::addSymbol(Symbol symbol)
 {
     Scope &scope = scopes[currentScopeId - 1];
-    auto it = scope.nameIndex.find(symbol.name);
-    if (it != scope.nameIndex.end())
+
+    if (scope.nameIndex.find(symbol.name) != scope.nameIndex.end())
     {
-        return false;
+        return -1;
     }
+
+    symbol.id = nextSymbolId++;
+    symbol.scopeId = currentScopeId;
+
     int index = scope.symbols.size();
     scope.nameIndex[symbol.name] = index;
-    symbol.scopeId = currentScopeId;
     scope.symbols.push_back(symbol);
-    return true;
+
+    return symbol.id;
 }
 string SymbolTable::getOutputTypeName(Symbol &symbol)
 {

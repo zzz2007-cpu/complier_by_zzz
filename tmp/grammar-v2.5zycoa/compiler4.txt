@@ -1,4 +1,0 @@
-output/2026文法解读提交/testfile4.txt: In function ‘main’:
-output/2026文法解读提交/testfile4.txt:15:23: warning: ISO C forbids empty initializer braces before C2X [-Wpedantic]
-   15 |     char buffer[12] = {};
-      |                       ^

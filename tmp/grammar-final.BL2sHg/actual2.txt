@@ -1,5 +1,0 @@
-24371350
-globals=0,0,0,2
-locals=7,12,1 statics=0,6
-shadow=9
-parentheses

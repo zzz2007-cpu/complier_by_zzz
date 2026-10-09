@@ -1,4 +1,0 @@
-gcc: warning: ‘-x c’ after last input file has no effect
-/usr/bin/ld:output/2026文法解读提交/testfile3.txt: file format not recognized; treating as linker script
-/usr/bin/ld:output/2026文法解读提交/testfile3.txt:1: syntax error
-collect2: error: ld returned 1 exit status
