@@ -114,19 +114,7 @@ struct IRProgram
     vector<IRFunction> functions;
     vector<IRStringConstant> strings;
 };
-struct IRBinding
-{
-    IRValue storage; // 唯一 IR 存储位置，例如 x@1
-    bool isConst = false;
 
-    int arrayLength = 0; // 0 表示标量
-    vector<long long> constantValues;
-};
-struct IRGenerationScope
-{
-    int id = 0;
-    unordered_map<string, IRBinding> bindings;
-};
 struct IRLValue
 {
     IRValue storage; // x 或 array
@@ -151,32 +139,33 @@ private:
     size_t currentFunctionIndex = 0;
     bool hasCurrentFunction = false;
 
-    vector<IRGenerationScope> scopes;
     vector<IRControlFlowTarget> controlFlowStack;
-
-    int nextScopeId = 1;
-    int nextStorageId = 0;
+    unordered_map<int, IRValue> bindings;
     int nextStringId = 0;
     const SymbolTable &symbolTable;
 
 public:
     IRProgram generate(const SyntaxNode &root);
     explicit IRGenerator(const SymbolTable &symbolTable);
-    void visitCompUnit(const SyntaxNode &node);
-    void visitMainFuncDef(const SyntaxNode &node);
-    void visitBlock(const SyntaxNode &node);
-    void visitBlockItem(const SyntaxNode &node);
-    void visitStmt(const SyntaxNode &node);
+    void lowerCompUnit(const SyntaxNode &node);
+    void lowerFunc(const SyntaxNode &node);
+    void lowerMainFunc(const SyntaxNode &node);
+    void lowerBlock(const SyntaxNode &node);
+    void lowerBlockItem(const SyntaxNode &node);
+    void lowerStatement(const SyntaxNode &node);
+    void lowerDecl(const SyntaxNode &node);
 
-    IRValue visitExp(const SyntaxNode &node);
-    IRValue visitAddExp(const SyntaxNode &node);
-    IRValue visitMulExp(const SyntaxNode &node);
-    IRValue visitUnaryExp(const SyntaxNode &node);
-    IRValue visitPrimaryExp(const SyntaxNode &node);
-    IRValue visitNumber(const SyntaxNode &node);
+    IRValue lowerExp(const SyntaxNode &node);
+    IRValue lowerAddExp(const SyntaxNode &node);
+    IRValue lowerMulExp(const SyntaxNode &node);
+    IRValue lowerUnaryEx(const SyntaxNode &node);
+    IRValue lowerPrimaryExpn(const SyntaxNode &node);
+    IRValue lowerNumber(const SyntaxNode &node);
 
     IRFunction &currentFunction();
     IRValue makeTemporary(IRType type);
     void emit(const IRInstruction &instruction);
+    bool isTokenType(const SyntaxNode &node, TokenType type);
+    bool isSyntaxType(const SyntaxNode &node, SyntaxType type);
 };
 #endif

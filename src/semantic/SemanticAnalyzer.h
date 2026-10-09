@@ -17,6 +17,8 @@ public:
     vector<Error> errors;
     void analyze(SyntaxNode &root);
     void printSymbols(ostream &output);
+    bool isSyntaxType(const SyntaxNode &node, SyntaxType type);
+    bool isTokenType(const SyntaxNode &node, TokenType type);
     struct FunctionSignature
     {
         BaseType returnType;
@@ -68,8 +70,7 @@ private:
     vector<long long> visitConstInitVal(SyntaxNode &node);
     void visitAssignmentStmt(SyntaxNode &node);
     BaseType readBType(const SyntaxNode &node);
-    bool isSyntaxType(const SyntaxNode &node, SyntaxType type);
-    bool isTokenType(const SyntaxNode &node, TokenType type);
+
     BaseType makeArrayType(BaseType type);
     BaseType readFuncType(const SyntaxNode &node);
     vector<BaseType> collectParamTypes(const SyntaxNode &funcFParams);
