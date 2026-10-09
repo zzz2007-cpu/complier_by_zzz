@@ -5,6 +5,11 @@
 #include "common/Error.h"
 #include "parser/SyntaxNode.h"
 using namespace std;
+struct ExprResult
+{
+    BaseType type = BaseType::Invalid;
+    optional<long long> constantValue;
+};
 class SemanticAnalyzer
 {
 public:
@@ -45,22 +50,22 @@ private:
     void visitStmt(SyntaxNode &node);
     void visitCaseStmt(SyntaxNode &node);
     void visitReturnStmt(SyntaxNode &node);
-    BaseType visitExp(SyntaxNode &node);
-    BaseType visitCond(SyntaxNode &node);
+    ExprResult visitExp(SyntaxNode &node);
+    ExprResult visitCond(SyntaxNode &node);
 
-    BaseType visitLVal(SyntaxNode &node);
-    BaseType visitNumber(SyntaxNode &node);
-    BaseType visitPrimaryExp(SyntaxNode &node);
-    BaseType visitUnaryExp(SyntaxNode &node);
-    BaseType visitMulExp(SyntaxNode &node);
-    BaseType visitAddExp(SyntaxNode &node);
-    BaseType visitRelExp(SyntaxNode &node);
-    BaseType visitEqExp(SyntaxNode &node);
-    BaseType visitLAndExp(SyntaxNode &node);
-    BaseType visitLOrExp(SyntaxNode &node);
-    BaseType visitConstExp(SyntaxNode &node);
+    ExprResult visitLVal(SyntaxNode &node);
+    ExprResult visitNumber(SyntaxNode &node);
+    ExprResult visitPrimaryExp(SyntaxNode &node);
+    ExprResult visitUnaryExp(SyntaxNode &node);
+    ExprResult visitMulExp(SyntaxNode &node);
+    ExprResult visitAddExp(SyntaxNode &node);
+    ExprResult visitRelExp(SyntaxNode &node);
+    ExprResult visitEqExp(SyntaxNode &node);
+    ExprResult visitLAndExp(SyntaxNode &node);
+    ExprResult visitLOrExp(SyntaxNode &node);
+    ExprResult visitConstExp(SyntaxNode &node);
     void visitInitVal(SyntaxNode &node);
-    void visitConstInitVal(SyntaxNode &node);
+    vector<long long> visitConstInitVal(SyntaxNode &node);
     void visitAssignmentStmt(SyntaxNode &node);
     BaseType readBType(const SyntaxNode &node);
     bool isSyntaxType(const SyntaxNode &node, SyntaxType type);
@@ -68,7 +73,6 @@ private:
     BaseType makeArrayType(BaseType type);
     BaseType readFuncType(const SyntaxNode &node);
     vector<BaseType> collectParamTypes(const SyntaxNode &funcFParams);
-    bool checkConstIdentifiers(const SyntaxNode &node);
     bool isScalarType(BaseType type);
     bool blockEndsWithReturn(const SyntaxNode &block);
     BaseType getArrayElementType(BaseType type);

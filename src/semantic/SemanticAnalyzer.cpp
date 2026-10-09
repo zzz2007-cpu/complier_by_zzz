@@ -134,15 +134,20 @@ void SA::visitConstDecl(SN &Node)
 void SA::visitVarDef(SyntaxNode &Node, BaseType baseType, bool isStatic)
 {
     const Token &token = get<Token>(Node.children[0].node);
+    int arrayLength = 0;
     for (SN &child : Node.children)
     {
         if (isSyntaxType(child, ST::ConstExp))
         {
             // 数组长度
-            BaseType type = visitConstExp(child);
-            if (type != BaseType::Invalid && type != BaseType::Int)
+            ExprResult result = visitConstExp(child);
+            if (result.type != BaseType::Invalid && result.type != BaseType::Int)
             {
                 errors.emplace_back(ErrorType::TypeMismatch, token.line);
+            }
+            else if (result.constantValue.has_value())
+            {
+                arrayLength = static_cast<int>(*result.constantValue);
             }
         }
         else if (isSyntaxType(child, ST::InitVal))
@@ -167,6 +172,7 @@ void SA::visitVarDef(SyntaxNode &Node, BaseType baseType, bool isStatic)
     symbol.type = isArray ? makeArrayType(baseType) : baseType;
     symbol.isStatic = isStatic;
     symbol.line = token.line;
+    symbol.arrayLength = arrayLength;
     int symbolId = symbolTable.addSymbol(symbol);
 
     if (symbolId == -1)
@@ -184,21 +190,27 @@ void SA::visitVarDef(SyntaxNode &Node, BaseType baseType, bool isStatic)
 void SA::visitConstDef(SyntaxNode &Node, BaseType baseType)
 {
     const Token &token = get<Token>(Node.children[0].node);
+    int arrayLength = 0;
+    vector<long long> constantValues;
     for (SN &child : Node.children)
     {
         if (isSyntaxType(child, ST::ConstExp))
         {
             // 常量数组长度
-            BaseType type = visitConstExp(child);
-            if (type != BaseType::Invalid && type != BaseType::Int)
+            ExprResult result = visitConstExp(child);
+            if (result.type != BaseType::Invalid && result.type != BaseType::Int)
             {
                 errors.emplace_back(ErrorType::TypeMismatch, token.line);
+            }
+            else if (result.constantValue.has_value())
+            {
+                arrayLength = static_cast<int>(*result.constantValue);
             }
         }
         else if (isSyntaxType(child, ST::ConstInitVal))
         {
             // 常量初始化值
-            visitConstInitVal(child);
+            constantValues = visitConstInitVal(child);
         }
     }
     bool isArray = false;
@@ -216,6 +228,13 @@ void SA::visitConstDef(SyntaxNode &Node, BaseType baseType)
     symbol.kind = SymbolKind::Constant;
     symbol.type = isArray ? makeArrayType(baseType) : baseType;
     symbol.line = token.line;
+    symbol.arrayLength = arrayLength;
+    if (isArray && arrayLength > 0 &&
+        constantValues.size() < static_cast<size_t>(arrayLength))
+    {
+        constantValues.resize(arrayLength, 0);
+    }
+    symbol.constantValues = move(constantValues);
     int symbolId = symbolTable.addSymbol(symbol);
 
     if (symbolId == -1)
@@ -579,33 +598,33 @@ BaseType SA::getArrayElementType(BaseType type)
     return BaseType::Invalid;
 }
 
-BaseType SA::visitNumber(SyntaxNode &node)
+ExprResult SA::visitNumber(SyntaxNode &node)
 {
     if (isTokenType(node.children[0], TokenType::INTCON))
     {
-        return BaseType::Int;
+        return {BaseType::Int, readNumberValue(node)};
     }
 
     if (isTokenType(node.children[0], TokenType::CHARCON))
     {
-        return BaseType::Char;
+        return {BaseType::Char, readNumberValue(node)};
     }
 
-    return BaseType::Invalid;
+    return {};
 }
-BaseType SA::visitLVal(SyntaxNode &node)
+ExprResult SA::visitLVal(SyntaxNode &node)
 {
     Token token = node.children[0].getToken();
     Symbol *symbol = symbolTable.lookup(token.s);
     if (symbol == nullptr)
     {
         errors.emplace_back(ErrorType::UndefinedName, token.line);
-        return BaseType::Invalid;
+        return {};
     }
     if (symbol->kind == SymbolKind::Function)
     {
         errors.emplace_back(ErrorType::TypeMismatch, token.line);
-        return BaseType::Invalid;
+        return {};
     }
     node.symbolId = symbol->id;
     SyntaxNode *index = nullptr;
@@ -619,31 +638,48 @@ BaseType SA::visitLVal(SyntaxNode &node)
     }
     if (index == nullptr)
     {
-        return symbol->type;
+        if (symbol->kind == SymbolKind::Constant &&
+            isScalarType(symbol->type) &&
+            !symbol->constantValues.empty())
+        {
+            return {symbol->type, symbol->constantValues[0]};
+        }
+        return {symbol->type, nullopt};
     }
-    BaseType indexType = visitExp(*index);
+    ExprResult indexResult = visitExp(*index);
 
-    if (indexType == BaseType::Invalid)
+    if (indexResult.type == BaseType::Invalid)
     {
-        return BaseType::Invalid;
+        return {};
     }
 
-    if (indexType != BaseType::Int)
+    if (indexResult.type != BaseType::Int)
     {
         errors.emplace_back(ErrorType::TypeMismatch, token.line);
-        return BaseType::Invalid;
+        return {};
     }
     BaseType elementType = getArrayElementType(symbol->type);
 
     if (elementType == BaseType::Invalid)
     {
         errors.emplace_back(ErrorType::TypeMismatch, token.line);
-        return BaseType::Invalid;
+        return {};
     }
 
-    return elementType;
+    if (symbol->kind == SymbolKind::Constant &&
+        indexResult.constantValue.has_value())
+    {
+        long long indexValue = *indexResult.constantValue;
+        if (indexValue >= 0 &&
+            indexValue < static_cast<long long>(symbol->constantValues.size()))
+        {
+            return {elementType, symbol->constantValues[indexValue]};
+        }
+    }
+
+    return {elementType, nullopt};
 }
-BaseType SA::visitPrimaryExp(SyntaxNode &node)
+ExprResult SA::visitPrimaryExp(SyntaxNode &node)
 {
     for (SN &child : node.children)
     {
@@ -663,68 +699,93 @@ BaseType SA::visitPrimaryExp(SyntaxNode &node)
         }
     }
 
-    return BaseType::Invalid;
+    return {};
 }
 
-BaseType SA::visitExp(SN &node)
+ExprResult SA::visitExp(SN &node)
 {
     if (node.children.empty() ||
         !isSyntaxType(node.children[0], ST::AddExp))
     {
-        return BaseType::Invalid;
+        return {};
     }
 
     return visitAddExp(node.children[0]);
 }
-BaseType SA::visitAddExp(SN &node)
+ExprResult SA::visitAddExp(SN &node)
 {
     if (node.children.size() == 1)
     {
         return visitMulExp(node.children[0]);
     }
-    BaseType left = visitAddExp(node.children[0]);
-    BaseType right = visitMulExp(node.children[2]);
-    if (left == BaseType::Invalid || right == BaseType::Invalid)
+    ExprResult left = visitAddExp(node.children[0]);
+    ExprResult right = visitMulExp(node.children[2]);
+    if (left.type == BaseType::Invalid || right.type == BaseType::Invalid)
     {
-        return BaseType::Invalid;
+        return {};
     }
-    if (left == BaseType::Int && right == BaseType::Int)
+    if (left.type != right.type || !isScalarType(left.type))
     {
-        return BaseType::Int;
+        Token token = node.children[1].getToken();
+        errors.push_back(Error(ErrorType::TypeMismatch, token.line));
+        return {};
     }
-    if (left == BaseType::Char && right == BaseType::Char)
+
+    if (!left.constantValue.has_value() ||
+        !right.constantValue.has_value())
     {
-        return BaseType::Char;
+        return {left.type, nullopt};
     }
-    Token token = node.children[1].getToken();
-    errors.push_back(Error(ErrorType::TypeMismatch, token.line));
-    return BaseType::Invalid;
+
+    long long value = node.children[1].getTokenType() == TokenType::PLUS
+                          ? *left.constantValue + *right.constantValue
+                          : *left.constantValue - *right.constantValue;
+    return {left.type, value};
 }
-BaseType SA::visitMulExp(SN &node)
+ExprResult SA::visitMulExp(SN &node)
 {
     if (node.children.size() == 1)
     {
         return visitUnaryExp(node.children[0]);
     }
-    BaseType left = visitMulExp(node.children[0]);
-    BaseType right = visitUnaryExp(node.children[2]);
-    if (left == BaseType::Invalid || right == BaseType::Invalid)
+    ExprResult left = visitMulExp(node.children[0]);
+    ExprResult right = visitUnaryExp(node.children[2]);
+    if (left.type == BaseType::Invalid || right.type == BaseType::Invalid)
     {
-        return BaseType::Invalid;
+        return {};
     }
-    if (left == BaseType::Int && right == BaseType::Int)
+    if (left.type != right.type || !isScalarType(left.type))
     {
-        return BaseType::Int;
+        Token token = node.children[1].getToken();
+        errors.push_back(Error(ErrorType::TypeMismatch, token.line));
+        return {};
     }
-    if (left == BaseType::Char && right == BaseType::Char)
+
+    if (!left.constantValue.has_value() ||
+        !right.constantValue.has_value())
     {
-        return BaseType::Char;
+        return {left.type, nullopt};
     }
-    Token token = node.children[1].getToken();
-    errors.push_back(Error(ErrorType::TypeMismatch, token.line));
-    return BaseType::Invalid;
+
+    long long value = 0;
+    TokenType op = node.children[1].getTokenType();
+    if (op == TokenType::MULT)
+    {
+        value = *left.constantValue * *right.constantValue;
+    }
+    else
+    {
+        if (*right.constantValue == 0)
+        {
+            return {left.type, nullopt};
+        }
+        value = op == TokenType::DIV
+                    ? *left.constantValue / *right.constantValue
+                    : *left.constantValue % *right.constantValue;
+    }
+    return {left.type, value};
 }
-BaseType SA::visitUnaryExp(SN &node)
+ExprResult SA::visitUnaryExp(SN &node)
 {
     if (isSyntaxType(node.children[0], SyntaxType::PrimaryExp))
     {
@@ -734,36 +795,47 @@ BaseType SA::visitUnaryExp(SN &node)
     {
         const SyntaxNode &unaryOp = node.children[0];
         TokenType op = unaryOp.children[0].getTokenType();
-        BaseType type = visitUnaryExp(node.children[1]);
-        if (type == BaseType::Invalid)
+        ExprResult operand = visitUnaryExp(node.children[1]);
+        if (operand.type == BaseType::Invalid)
         {
-            return type;
+            return operand;
         }
-        if (!isScalarType(type))
+        if (!isScalarType(operand.type))
         {
             errors.push_back(Error(ErrorType::TypeMismatch, node.children[0].children[0].getToken().line));
-            return BaseType::Invalid;
+            return {};
         }
         if (op == TokenType::NOT)
         {
-            return BaseType::Int;
+            return {BaseType::Int,
+                    operand.constantValue.has_value()
+                        ? optional<long long>(!*operand.constantValue)
+                        : nullopt};
         }
-        return type;
+        if (op == TokenType::MINU && operand.constantValue.has_value())
+        {
+            operand.constantValue = -*operand.constantValue;
+        }
+        return operand;
     }
     if (isTokenType(node.children[0], TokenType::LPARENT))
     {
         BaseType targetType = readBType(node.children[1]);
-        BaseType changedType = visitUnaryExp(node.children[3]);
-        if (changedType == BaseType::Int || changedType == BaseType::Char)
+        ExprResult changed = visitUnaryExp(node.children[3]);
+        if (changed.type == BaseType::Int || changed.type == BaseType::Char)
         {
-            return targetType;
+            if (changed.constantValue.has_value() && targetType == BaseType::Char)
+            {
+                changed.constantValue = static_cast<unsigned char>(*changed.constantValue);
+            }
+            return {targetType, changed.constantValue};
         }
-        if (changedType == BaseType::Void || changedType == BaseType::CharArray || changedType == BaseType::IntArray)
+        if (changed.type == BaseType::Void || changed.type == BaseType::CharArray || changed.type == BaseType::IntArray)
         {
             errors.push_back(Error(ErrorType::TypeMismatch, node.children[2].getToken().line));
-            return BaseType::Invalid;
+            return {};
         }
-        return BaseType::Invalid;
+        return {};
     }
     if (isTokenType(node.children[0], TokenType::IDENFR))
     {
@@ -774,12 +846,12 @@ BaseType SA::visitUnaryExp(SN &node)
         if (symbol == nullptr && it == builtinFunctions.end())
         {
             errors.push_back(Error(ErrorType::UndefinedName, functionName.line));
-            return BaseType::Invalid;
+            return {};
         }
         if (symbol != nullptr && symbol->kind != SymbolKind::Function)
         {
             errors.push_back(Error(ErrorType::TypeMismatch, functionName.line));
-            return BaseType::Invalid;
+            return {};
         }
         if (symbol != nullptr)
         {
@@ -802,7 +874,7 @@ BaseType SA::visitUnaryExp(SN &node)
             {
                 if (isSyntaxType(child, SyntaxType::Exp))
                 {
-                    actualTypes.push_back(visitExp(child));
+                    actualTypes.push_back(visitExp(child).type);
                 }
             }
         }
@@ -842,119 +914,147 @@ BaseType SA::visitUnaryExp(SN &node)
                 }
             }
         }
-        return returnType;
+        return {returnType, nullopt};
     }
-    return BaseType::Invalid;
+    return {};
 }
 
-BaseType SA::visitRelExp(SN &node)
+ExprResult SA::visitRelExp(SN &node)
 {
     if (node.children.size() == 1)
     {
         return visitAddExp(node.children[0]);
     }
-    BaseType left = visitRelExp(node.children[0]);
-    BaseType right = visitAddExp(node.children[2]);
+    ExprResult left = visitRelExp(node.children[0]);
+    ExprResult right = visitAddExp(node.children[2]);
 
-    if (left == BaseType::Invalid || right == BaseType::Invalid)
+    if (left.type == BaseType::Invalid || right.type == BaseType::Invalid)
     {
-        return BaseType::Invalid;
+        return {};
     }
-    if ((!isScalarType(left) || (!isScalarType(right))))
-    {
-        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
-    }
-    if (left != right)
+    if ((!isScalarType(left.type) || (!isScalarType(right.type))))
     {
         errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
+        return {};
     }
-    return BaseType::Int;
+    if (left.type != right.type)
+    {
+        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
+        return {};
+    }
+    if (!left.constantValue.has_value() || !right.constantValue.has_value())
+    {
+        return {BaseType::Int, nullopt};
+    }
+    bool value = false;
+    switch (node.children[1].getTokenType())
+    {
+    case TokenType::LSS: value = *left.constantValue < *right.constantValue; break;
+    case TokenType::LEQ: value = *left.constantValue <= *right.constantValue; break;
+    case TokenType::GRE: value = *left.constantValue > *right.constantValue; break;
+    case TokenType::GEQ: value = *left.constantValue >= *right.constantValue; break;
+    default: break;
+    }
+    return {BaseType::Int, value};
 }
-BaseType SA::visitEqExp(SN &node)
+ExprResult SA::visitEqExp(SN &node)
 {
     if (node.children.size() == 1)
     {
         return visitRelExp(node.children[0]);
     }
-    BaseType left = visitEqExp(node.children[0]);
-    BaseType right = visitRelExp(node.children[2]);
+    ExprResult left = visitEqExp(node.children[0]);
+    ExprResult right = visitRelExp(node.children[2]);
 
-    if (left == BaseType::Invalid || right == BaseType::Invalid)
+    if (left.type == BaseType::Invalid || right.type == BaseType::Invalid)
     {
-        return BaseType::Invalid;
+        return {};
     }
-    if ((!isScalarType(left) || (!isScalarType(right))))
-    {
-        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
-    }
-    if (left != right)
+    if ((!isScalarType(left.type) || (!isScalarType(right.type))))
     {
         errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
+        return {};
     }
-    return BaseType::Int;
+    if (left.type != right.type)
+    {
+        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
+        return {};
+    }
+    if (!left.constantValue.has_value() || !right.constantValue.has_value())
+    {
+        return {BaseType::Int, nullopt};
+    }
+    bool value = node.children[1].getTokenType() == TokenType::EQL
+                     ? *left.constantValue == *right.constantValue
+                     : *left.constantValue != *right.constantValue;
+    return {BaseType::Int, value};
 }
-BaseType SA::visitLAndExp(SN &node)
+ExprResult SA::visitLAndExp(SN &node)
 {
     if (node.children.size() == 1)
     {
         return visitEqExp(node.children[0]);
     }
-    BaseType left = visitLAndExp(node.children[0]);
-    BaseType right = visitEqExp(node.children[2]);
+    ExprResult left = visitLAndExp(node.children[0]);
+    ExprResult right = visitEqExp(node.children[2]);
 
-    if (left == BaseType::Invalid || right == BaseType::Invalid)
+    if (left.type == BaseType::Invalid || right.type == BaseType::Invalid)
     {
-        return BaseType::Invalid;
+        return {};
     }
-    if ((!isScalarType(left) || (!isScalarType(right))))
-    {
-        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
-    }
-    if (left != right)
+    if ((!isScalarType(left.type) || (!isScalarType(right.type))))
     {
         errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
+        return {};
     }
-    return BaseType::Int;
+    if (left.type != right.type)
+    {
+        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
+        return {};
+    }
+    if (!left.constantValue.has_value() || !right.constantValue.has_value())
+    {
+        return {BaseType::Int, nullopt};
+    }
+    return {BaseType::Int, *left.constantValue && *right.constantValue};
 }
-BaseType SA::visitLOrExp(SN &node)
+ExprResult SA::visitLOrExp(SN &node)
 {
     if (node.children.size() == 1)
     {
         return visitLAndExp(node.children[0]);
     }
-    BaseType left = visitLOrExp(node.children[0]);
-    BaseType right = visitLAndExp(node.children[2]);
+    ExprResult left = visitLOrExp(node.children[0]);
+    ExprResult right = visitLAndExp(node.children[2]);
 
-    if (left == BaseType::Invalid || right == BaseType::Invalid)
+    if (left.type == BaseType::Invalid || right.type == BaseType::Invalid)
     {
-        return BaseType::Invalid;
+        return {};
     }
-    if ((!isScalarType(left) || (!isScalarType(right))))
-    {
-        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
-    }
-    if (left != right)
+    if ((!isScalarType(left.type) || (!isScalarType(right.type))))
     {
         errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
-        return BaseType::Invalid;
+        return {};
     }
-    return BaseType::Int;
+    if (left.type != right.type)
+    {
+        errors.push_back(Error(ErrorType::TypeMismatch, node.children[1].getToken().line));
+        return {};
+    }
+    if (!left.constantValue.has_value() || !right.constantValue.has_value())
+    {
+        return {BaseType::Int, nullopt};
+    }
+    return {BaseType::Int, *left.constantValue || *right.constantValue};
 }
-BaseType SA::visitCond(SN &node)
+ExprResult SA::visitCond(SN &node)
 {
     return visitLOrExp(node.children[0]);
 }
 void SA::visitAssignmentStmt(SyntaxNode &node)
 {
-    BaseType left = visitLVal(node.children[0]);
-    BaseType right = visitExp(node.children[2]);
+    BaseType left = visitLVal(node.children[0]).type;
+    BaseType right = visitExp(node.children[2]).type;
     if (left == BaseType::Invalid || right == BaseType::Invalid)
     {
         return;
@@ -978,54 +1078,15 @@ void SA::visitAssignmentStmt(SyntaxNode &node)
     }
     return;
 }
-BaseType SA::visitConstExp(SN &node)
+ExprResult SA::visitConstExp(SN &node)
 {
     if (node.children.empty() ||
         !isSyntaxType(node.children[0], ST::AddExp))
     {
-        return BaseType::Invalid;
+        return {};
     }
 
-    BaseType type = visitAddExp(node.children[0]);
-
-    if (type == BaseType::Invalid)
-    {
-        return BaseType::Invalid;
-    }
-
-    return type;
-}
-
-bool SA::checkConstIdentifiers(const SN &node)
-{
-    if (node.isTerminal())
-    {
-        if (node.getTokenType() != TokenType::IDENFR)
-        {
-            return true;
-        }
-
-        Token token = node.getToken();
-        Symbol *symbol = symbolTable.lookup(token.s);
-
-        if (symbol == nullptr)
-        {
-            // visitAddExp -> visitLVal/visitUnaryExp 会负责报告错误 c
-            return false;
-        }
-
-        return symbol->kind == SymbolKind::Constant;
-    }
-
-    for (const SN &child : node.children)
-    {
-        if (!checkConstIdentifiers(child))
-        {
-            return false;
-        }
-    }
-
-    return true;
+    return visitAddExp(node.children[0]);
 }
 void SA::visitInitVal(SN &node)
 {
@@ -1037,15 +1098,51 @@ void SA::visitInitVal(SN &node)
         }
     }
 }
-void SA::visitConstInitVal(SN &node)
+vector<long long> SA::visitConstInitVal(SN &node)
 {
+    vector<long long> values;
     for (SN &child : node.children)
     {
         if (isSyntaxType(child, ST::ConstExp))
         {
-            visitConstExp(child);
+            ExprResult result = visitConstExp(child);
+            if (result.constantValue.has_value())
+            {
+                values.push_back(*result.constantValue);
+            }
+        }
+        else if (isTokenType(child, TokenType::STRCON))
+        {
+            const string &text = child.getToken().s;
+            for (size_t i = 1; i + 1 < text.size(); ++i)
+            {
+                if (text[i] != '\\')
+                {
+                    values.push_back(static_cast<unsigned char>(text[i]));
+                    continue;
+                }
+
+                if (++i + 1 >= text.size())
+                {
+                    break;
+                }
+
+                switch (text[i])
+                {
+                case 'n': values.push_back('\n'); break;
+                case 't': values.push_back('\t'); break;
+                case 'r': values.push_back('\r'); break;
+                case '0': values.push_back('\0'); break;
+                case '\\': values.push_back('\\'); break;
+                case '\'': values.push_back('\''); break;
+                case '"': values.push_back('"'); break;
+                default: values.push_back(static_cast<unsigned char>(text[i])); break;
+                }
+            }
+            values.push_back('\0');
         }
     }
+    return values;
 }
 void SA::visitReturnStmt(SyntaxNode &node)
 {
@@ -1059,7 +1156,7 @@ void SA::visitReturnStmt(SyntaxNode &node)
     }
     else
     {
-        BaseType returnType = visitExp(node.children[1]);
+        BaseType returnType = visitExp(node.children[1]).type;
         if (returnType == BaseType::Invalid)
         {
             return;
@@ -1117,7 +1214,7 @@ void SA::visitPrintfStmt(SyntaxNode &node)
     {
         if (isSyntaxType(child, SyntaxType::Exp))
         {
-            actulTypes.push_back(visitExp(child));
+            actulTypes.push_back(visitExp(child).type);
         }
     }
     if (actulTypes.size() != paramTypes.size())
@@ -1140,7 +1237,7 @@ void SA::visitPrintfStmt(SyntaxNode &node)
 }
 void SA::visitSwitchStmt(SyntaxNode &node)
 {
-    BaseType swithType = visitExp(node.children[2]);
+    BaseType swithType = visitExp(node.children[2]).type;
     if (swithType != BaseType::Invalid && !isScalarType(swithType))
     {
         errors.push_back(Error(ErrorType::TypeMismatch, node.children[0].getToken().line));
@@ -1159,7 +1256,7 @@ void SA::visitSwitchStmt(SyntaxNode &node)
         {
             SyntaxNode &number = child.children[1];
 
-            BaseType caseType = visitNumber(number);
+            BaseType caseType = visitNumber(number).type;
 
             if (isScalarType(swithType) &&
                 caseType != swithType)

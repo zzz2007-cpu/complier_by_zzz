@@ -5,6 +5,21 @@ SymbolTable::SymbolTable() : currentScopeId(1), nextScopeId(2)
 {
     SymbolTable::scopes.push_back(Scope(1, 0));
 }
+const Symbol *SymbolTable::getSymbolById(int symbolId) const
+{
+    for (const Scope &scope : scopes)
+    {
+        for (const Symbol &symbol : scope.symbols)
+        {
+            if (symbol.id == symbolId)
+            {
+                return &symbol;
+            }
+        }
+    }
+
+    return nullptr;
+}
 int SymbolTable::enterScope()
 {
     int newId = nextScopeId++;

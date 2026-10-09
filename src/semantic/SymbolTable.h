@@ -28,6 +28,8 @@ struct Symbol
     int scopeId;
     int line;
     vector<BaseType> params;
+    int arrayLength = 0;
+    vector<long long> constantValues;
 };
 struct Scope
 {
@@ -50,6 +52,7 @@ private:
     string getOutputTypeName(Symbol &symbol);
 
 public:
+    const Symbol *getSymbolById(int symbolId) const;
     SymbolTable();
     int enterScope();
     void leaveScope();

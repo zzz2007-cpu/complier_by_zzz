@@ -2,6 +2,7 @@
 #define IR_H
 #include <bits/stdc++.h>
 #include "parser/SyntaxNode.h"
+#include "semantic/SymbolTable.h"
 using namespace std;
 enum class IRBaseType
 {
@@ -156,10 +157,11 @@ private:
     int nextScopeId = 1;
     int nextStorageId = 0;
     int nextStringId = 0;
+    const SymbolTable &symbolTable;
 
 public:
     IRProgram generate(const SyntaxNode &root);
-
+    explicit IRGenerator(const SymbolTable &symbolTable);
     void visitCompUnit(const SyntaxNode &node);
     void visitMainFuncDef(const SyntaxNode &node);
     void visitBlock(const SyntaxNode &node);

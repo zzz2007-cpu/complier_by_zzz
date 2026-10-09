@@ -22,3 +22,8 @@ void IRG::emit(const IRInstruction &instruction)
 {
     currentFunction().instructions.push_back(instruction);
 }
+
+IRG::IRG(const SymbolTable &symbolTable)
+    : symbolTable(symbolTable)
+{
+}
